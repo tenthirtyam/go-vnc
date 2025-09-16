@@ -1,0 +1,43 @@
+---
+# These settings are synced to GitHub by the Probot Settings app.
+# Refernece: https://probot.github.io/apps/settings/.
+
+repository:
+  name: go-vnc
+  description: A Go library for the VNC client protocol, compliant with RFC 6143.
+  homepage: https://pkg.go.dev/github.com/tenthirtyam/go-vnc
+  topics: go, golang, library, vnc, vnc-client, rfc6143
+  archived: false
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+  has_downloads: false
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: false
+  delete_branch_on_merge: true
+  enable_automated_security_fixes: true
+  enable_vulnerability_alerts: true
+labels:
+  - name: bug
+    color: "#d73a4a"
+    description: Bug
+  - name: chore
+    color: "#84D396"
+    description: Chore
+  - name: dependencies
+    color: "#84D396"
+    description: Dependencies
+  - name: documentation
+    color: "#0075ca"
+    description: Documentation
+  - name: enhancement
+    color: "#0075ca"
+    description: Enhancement
+  - name: github-actions
+    color: "#000000"
+    description: GitHub Actions
+  - name: stale
+    color: "#e69138"
+    description: Stale

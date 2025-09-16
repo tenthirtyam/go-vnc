@@ -1,0 +1,19 @@
+# Ignore distribution directories.
+dist/
+
+# Ignore editor directories.
+.idea/
+.vscode/
+
+# Ignore temporary editor files.
+*~
+
+# Ignore macOS desktop services store files.
+**/.DS_Store
+
+# Ignore test coverage files.
+coverage.out
+coverage.html
+
+# Ignore documentation files.
+docs.txt

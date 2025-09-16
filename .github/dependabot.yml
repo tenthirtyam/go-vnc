@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Ryan Johnson
+
+version: 2
+updates:
+  # o modules
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "chore"
+      - "dependencies"
+
+  # GitHub Actions updates.
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(gh):"
+      include: "scope"
+    labels:
+      - "chore"
+      - "github-actions"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

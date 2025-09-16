@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Sponsor this Project
+    url: https://github.com/sponsors/tenthirtyam
+    about: Support this project by sponsoring it on GitHub.
+  - name: Buy Me a Coffee
+    url: https://buymeacoffee.com/tenthirtyam
+    about: Support this project by buying me a coffee.

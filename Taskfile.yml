@@ -1,0 +1,95 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Ryan Johnson
+
+version: "3"
+
+tasks:
+  default:
+    desc: Show all available tasks.
+    cmds:
+      - task --list
+
+  # Build targets
+  build:
+    desc: Build the library and all packages.
+    cmds:
+      - go build -v ./...
+
+  examples:
+    desc: Build all example programs.
+    dir: examples
+    cmds:
+      - go build -v ./...
+
+  # Test targets
+  test:
+    desc: Run all tests with verbose output.
+    cmds:
+      - go test -v ./...
+
+  test-race:
+    desc: Run all tests with race condition detection.
+    cmds:
+      - go test -v -race ./...
+
+  test-cover:
+    desc: Run tests with coverage analysis and generate HTML report.
+    cmds:
+      - go test -v -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out -o coverage.html
+
+  benchmark:
+    desc: Run all benchmarks with memory allocation statistics.
+    cmds:
+      - go test -v -bench=. -benchmem ./...
+
+  # Code quality
+  lint:
+    desc: Run golangci-lint to check code quality.
+    cmds:
+      - golangci-lint run
+
+  fmt:
+    desc: Format all Go source code.
+    cmds:
+      - go fmt ./...
+
+  vet:
+    desc: Run go vet to examine Go source code.
+    cmds:
+      - go vet ./...
+
+  check:
+    desc: Run all code quality checks including formatting, vetting, linting, and testing.
+    deps: [fmt, vet, lint, test]
+
+  # Dependencies
+  deps:
+    desc: Download and verify all module dependencies.
+    cmds:
+      - go mod download
+      - go mod verify
+
+  deps-update:
+    desc: Update all dependencies to their latest versions.
+    cmds:
+      - go get -u ./...
+      - go mod tidy
+
+  # Cleanup
+  clean:
+    desc: Clean build artifacts, test caches, and coverage reports.
+    cmds:
+      - go clean -cache
+      - go clean -testcache
+      - rm -f coverage.out coverage.html
+
+  # CI pipeline
+  ci:
+    desc: Run the complete CI pipeline with formatting, vetting, linting, and comprehensive testing.
+    deps: [fmt, vet, lint, test-race]
+
+  # Release preparation
+  release-prep:
+    desc: Prepare for release by running all checks, tests, and building examples.
+    deps: [fmt, lint, test, test-race, build, examples]
