@@ -301,9 +301,9 @@ func (m *MockVNCServer) sendFramebufferUpdate(conn net.Conn) {
 	pixelData := make([]byte, 10*10*4) // 4 bytes per pixel
 	for i := 0; i < len(pixelData); i += 4 {
 		pixelData[i] = 0     // Blue
-		pixelData[i+1] = 0   // Green
-		pixelData[i+2] = 255 // Red
-		pixelData[i+3] = 255 // Alpha
+		pixelData[i+1] = 0   //nolint:gosec // stride of 4 matches allocation (10*10*4), so i+1 is always in bounds // Green
+		pixelData[i+2] = 255 //nolint:gosec // stride of 4 matches allocation (10*10*4), so i+2 is always in bounds // Red
+		pixelData[i+3] = 255 //nolint:gosec // stride of 4 matches allocation (10*10*4), so i+3 is always in bounds // Alpha
 	}
 	if _, err := conn.Write(pixelData); err != nil {
 		return
