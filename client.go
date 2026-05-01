@@ -448,7 +448,7 @@ func (c *ClientConn) CutText(text string) error {
 			return validationError("CutText", fmt.Sprintf("character '%c' is not valid Latin-1", char), nil)
 		}
 
-		if err := binary.Write(&buf, binary.BigEndian, uint8(char)); err != nil {
+		if err := binary.Write(&buf, binary.BigEndian, uint8(char)); err != nil { //nolint:gosec // char is validated against Latin1MaxCodePoint above
 			return networkError("CutText", "failed to write character to buffer", err)
 		}
 	}

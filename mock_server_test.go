@@ -298,8 +298,8 @@ func (m *MockVNCServer) sendFramebufferUpdate(conn net.Conn) {
 	}
 
 	// Send 10x10 pixels of red color (simplified)
-	pixelData := make([]byte, 10*10*4) // 4 bytes per pixel
-	for i := 0; i < len(pixelData); i += 4 {
+	pixelData := make([]byte, 10*10*4)       // 4 bytes per pixel
+	for i := 0; i < len(pixelData); i += 4 { //nolint:gosec // stride of 4 matches allocation (10*10*4), so i+3 is always in bounds
 		pixelData[i] = 0     // Blue
 		pixelData[i+1] = 0   // Green
 		pixelData[i+2] = 255 // Red
