@@ -1,3 +1,3 @@
 module github.com/tenthirtyam/go-vnc
 
-go 1.23.11
+go 1.25.8
