@@ -1,0 +1,15 @@
+# Default.
+*           text=auto eol=lf
+
+# Normalize to LF.
+*.go        text eol=lf
+*.md        text eol=lf
+*.mod       text eol=lf
+*.sum       text eol=lf
+*.yml       text eol=lf
+CODEOWNERS  text eol=lf
+LICENSE     text eol=lf
+NOTICE      text eol=lf
+
+# Binary files.
+*.png       binary
