@@ -1,9 +1,7 @@
-# SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Ryan Johnson
-
+---
 version: 2
 updates:
-  # o modules
+  # Go modules
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
