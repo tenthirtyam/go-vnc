@@ -23,7 +23,7 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Setup Task
-        uses: tenthirtyam/setup-task@09f14d66a9c5c0e995461896dd5cb6e1d74df08b # v1.0.4
+        uses: tenthirtyam/setup-task@d179f8003b3fabb68608fd63d218495faa40f101 # v1.0.5
         with:
           version: latest
       - name: Build
@@ -44,7 +44,7 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Setup Task
-        uses: tenthirtyam/setup-task@09f14d66a9c5c0e995461896dd5cb6e1d74df08b # v1.0.4
+        uses: tenthirtyam/setup-task@d179f8003b3fabb68608fd63d218495faa40f101 # v1.0.5
         with:
           version: latest
       - name: Run Tests
@@ -65,6 +65,6 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Run Linters
-        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
         with:
           version: latest
