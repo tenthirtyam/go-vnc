@@ -23,7 +23,7 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Setup Task
-        uses: tenthirtyam/setup-task@d179f8003b3fabb68608fd63d218495faa40f101 # v1.0.5
+        uses: tenthirtyam/setup-task@e138564990f8e703303a91da195c39402de8d991 # v1.0.6
         with:
           version: latest
       - name: Build
@@ -44,7 +44,7 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Setup Task
-        uses: tenthirtyam/setup-task@d179f8003b3fabb68608fd63d218495faa40f101 # v1.0.5
+        uses: tenthirtyam/setup-task@e138564990f8e703303a91da195c39402de8d991 # v1.0.6
         with:
           version: latest
       - name: Run Tests
