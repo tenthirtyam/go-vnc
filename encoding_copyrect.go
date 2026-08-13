@@ -139,7 +139,7 @@ func (*CopyRectEncoding) Type() int32 {
 //	// Example: Copy from (100, 200) to destination rectangle
 //	// Wire bytes: [0x00, 0x64, 0x00, 0xC8]
 //	//             |  100   |  200   |
-func (*CopyRectEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (Encoding, error) {
+func (*CopyRectEncoding) Read(_ *ClientConn, _ *Rectangle, r io.Reader) (Encoding, error) {
 	var srcX, srcY uint16
 
 	if err := binary.Read(r, binary.BigEndian, &srcX); err != nil {

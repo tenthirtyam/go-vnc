@@ -182,7 +182,7 @@ func (*CursorPseudoEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (
 //
 // Note: This is a basic implementation that logs the cursor update.
 // Applications should extend this to integrate with their cursor management system.
-func (cursor *CursorPseudoEncoding) Handle(c *ClientConn, rect *Rectangle) error {
+func (cursor *CursorPseudoEncoding) Handle(c *ClientConn, _ *Rectangle) error {
 	if cursor.Width == 0 && cursor.Height == 0 {
 		c.logger.Debug("Cursor hidden")
 	} else {
