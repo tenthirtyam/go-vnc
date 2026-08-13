@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 // Field represents a structured logging field with a key-value pair.
@@ -83,11 +84,12 @@ func (l *StandardLogger) formatMessage(level, msg string, fields ...Field) strin
 	if len(allFields) == 0 {
 		return level + " " + msg
 	}
-	formatted := level + " " + msg
+	var formatted strings.Builder
+	formatted.WriteString(level + " " + msg)
 	for _, field := range allFields {
-		formatted += " " + field.Key + "=" + formatFieldValue(field.Value)
+		formatted.WriteString(" " + field.Key + "=" + formatFieldValue(field.Value))
 	}
-	return formatted
+	return formatted.String()
 }
 
 // formatFieldValue converts a field value to a string representation for logging.
