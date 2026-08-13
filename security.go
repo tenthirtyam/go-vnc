@@ -157,10 +157,7 @@ func (sdc *SecureDESCipher) EncryptVNCChallenge(password string, challenge []byt
 	passwordBytes := []byte(password)
 	defer sdc.secMem.ClearBytes(passwordBytes)
 
-	keyLen := len(passwordBytes)
-	if keyLen > VNCMaxPasswordLength {
-		keyLen = VNCMaxPasswordLength
-	}
+	keyLen := min(len(passwordBytes), VNCMaxPasswordLength)
 
 	for i := 0; i < DESKeySize; i++ {
 		if i < keyLen {
