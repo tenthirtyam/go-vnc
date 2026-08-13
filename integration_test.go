@@ -386,7 +386,7 @@ func TestIntegration_Stress(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), testDuration)
 		defer cancel()
 
-		for i := 0; i < numConnections; i++ {
+		for i := range numConnections {
 			go func(connID int) {
 				defer func() {
 					if r := recover(); r != nil {
@@ -474,7 +474,7 @@ func TestIntegration_Stress(t *testing.T) {
 		const requestInterval = 10 * time.Millisecond
 
 		start := time.Now()
-		for i := 0; i < requestCount; i++ {
+		for i := range requestCount {
 			err := client.FramebufferUpdateRequest(true, 0, 0,
 				client.FrameBufferWidth, client.FrameBufferHeight)
 			if err != nil {

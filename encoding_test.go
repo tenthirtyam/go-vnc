@@ -457,7 +457,7 @@ func TestEncoding_Hextile(t *testing.T) {
 				// Raw tile (subencoding = 1)
 				data := []byte{0x01} // Raw subencoding
 				// Add 16x16 pixels of raw data (32-bit)
-				for i := 0; i < 16*16*4; i++ {
+				for i := range 16 * 16 * 4 {
 					data = append(data, byte(i%256))
 				}
 				return data
