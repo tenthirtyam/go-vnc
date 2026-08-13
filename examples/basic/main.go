@@ -213,6 +213,9 @@ func simulateServerMessages(msgCh chan<- vnc.ServerMessage) {
 			vnc.ColorRed,
 			vnc.ColorGreen,
 			vnc.ColorBlue,
+			vnc.ColorYellow,
+			vnc.ColorMagenta,
+			vnc.ColorCyan,
 		},
 	}
 }
