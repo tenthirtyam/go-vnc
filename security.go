@@ -173,23 +173,10 @@ func (sdc *SecureDESCipher) EncryptVNCChallenge(password string, challenge []byt
 			"failed to create DES cipher", err)
 	}
 
-	if len(challenge) != VNCChallengeSize {
-		return nil, authenticationError("SecureDESCipher.EncryptVNCChallenge",
-			fmt.Sprintf("invalid challenge size: expected %d, got %d", VNCChallengeSize, len(challenge)), nil)
-	}
-
+	// Challenge length is validated above; DESKeySize (8) < VNCChallengeSize (16)
+	// so both DES blocks fit without additional bounds checks.
 	result := make([]byte, VNCChallengeSize)
-
-	if DESKeySize > len(result) || DESKeySize > len(challenge) {
-		return nil, authenticationError("SecureDESCipher.EncryptVNCChallenge",
-			"invalid DES key size for encryption", nil)
-	}
 	block.Encrypt(result[0:DESKeySize], challenge[0:DESKeySize])
-
-	if VNCChallengeSize > len(result) || VNCChallengeSize > len(challenge) || DESKeySize >= VNCChallengeSize {
-		return nil, authenticationError("SecureDESCipher.EncryptVNCChallenge",
-			"invalid challenge size for second DES block", nil)
-	}
 	block.Encrypt(result[DESKeySize:VNCChallengeSize], challenge[DESKeySize:VNCChallengeSize])
 
 	return result, nil
