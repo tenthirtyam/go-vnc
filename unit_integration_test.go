@@ -137,15 +137,21 @@ func TestUnitIntegration_ConnectionTimeout(t *testing.T) {
 	}
 	defer listener.Close()
 
-	// Accept connections but don't respond
+	// Accept connections but don't respond. Keep them open until the
+	// listener closes so the client can time out waiting for a handshake.
 	go func() {
+		var conns []net.Conn
+		defer func() {
+			for _, c := range conns {
+				_ = c.Close()
+			}
+		}()
 		for {
 			conn, err := listener.Accept()
 			if err != nil {
 				return
 			}
-			// Don't send anything, just keep connection open
-			defer conn.Close()
+			conns = append(conns, conn)
 		}
 	}()
 
