@@ -229,48 +229,31 @@ func TestLogging_Integration(t *testing.T) {
 func TestLogging_ClientConnInitialization(t *testing.T) {
 	// This test verifies that the logger initialization logic in Client() works correctly
 	// We can't easily test the full Client() function without a real network connection,
-	// but we can test the logger initialization logic
+	// but we can test the logger initialization logic.
+
+	initLogger := func(cfg *ClientConfig) Logger {
+		var logger Logger = &NoOpLogger{}
+		if cfg != nil && cfg.Logger != nil {
+			logger = cfg.Logger
+		}
+		return logger
+	}
 
 	var buf bytes.Buffer
 	stdLogger := log.New(&buf, "", 0)
 	logger := &StandardLogger{Logger: stdLogger}
 
-	// Test with logger in config
-	config := &ClientConfig{
-		Logger: logger,
-	}
-
-	// Simulate the logger initialization logic from Client()
-	var clientLogger Logger = &NoOpLogger{}
-	if config != nil && config.Logger != nil {
-		clientLogger = config.Logger
-	}
-
-	// Verify the logger is correctly assigned
+	clientLogger := initLogger(&ClientConfig{Logger: logger})
 	if _, ok := clientLogger.(*StandardLogger); !ok {
 		t.Errorf("Expected StandardLogger, got %T", clientLogger)
 	}
 
-	// Test with nil config
-	var nilConfig *ClientConfig = nil
-	clientLogger = &NoOpLogger{}
-	if nilConfig != nil && nilConfig.Logger != nil {
-		clientLogger = nilConfig.Logger
-	}
-
-	// Should remain NoOpLogger
+	clientLogger = initLogger(nil)
 	if _, ok := clientLogger.(*NoOpLogger); !ok {
 		t.Errorf("Expected NoOpLogger for nil config, got %T", clientLogger)
 	}
 
-	// Test with config but no logger
-	configNoLogger := &ClientConfig{}
-	clientLogger = &NoOpLogger{}
-	if configNoLogger != nil && configNoLogger.Logger != nil {
-		clientLogger = configNoLogger.Logger
-	}
-
-	// Should remain NoOpLogger
+	clientLogger = initLogger(&ClientConfig{})
 	if _, ok := clientLogger.(*NoOpLogger); !ok {
 		t.Errorf("Expected NoOpLogger for config without logger, got %T", clientLogger)
 	}
