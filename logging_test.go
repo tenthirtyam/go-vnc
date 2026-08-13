@@ -207,7 +207,6 @@ func TestLogging_Integration(t *testing.T) {
 
 	// Test ClientConfig with logger
 	config := &ClientConfig{
-		Auth:   []ClientAuth{new(ClientAuthNone)},
 		Logger: logger,
 	}
 
@@ -217,9 +216,7 @@ func TestLogging_Integration(t *testing.T) {
 	}
 
 	// Test that NoOpLogger works as default
-	configWithoutLogger := &ClientConfig{
-		Auth: []ClientAuth{new(ClientAuthNone)},
-	}
+	configWithoutLogger := &ClientConfig{}
 
 	if configWithoutLogger.Logger != nil {
 		t.Error("Logger should be nil when not explicitly set")

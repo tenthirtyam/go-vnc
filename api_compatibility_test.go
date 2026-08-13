@@ -472,11 +472,6 @@ func TestAPICompatibility_ErrorHandling(t *testing.T) {
 			if err.Error() == "" {
 				t.Errorf("Error at index %d has empty Error() string", i)
 			}
-
-			// Test that errors can be compared
-			if err == nil {
-				t.Errorf("Error at index %d should not be nil", i)
-			}
 		}
 	})
 
