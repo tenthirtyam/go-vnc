@@ -21,13 +21,13 @@ func newMockServer(t *testing.T, version string) string {
 	}
 
 	go func() {
-		defer ln.Close()
+		defer func() { _ = ln.Close() }()
 		c, err := ln.Accept()
 		if err != nil {
 			t.Logf("error accepting conn: %s", err)
 			return
 		}
-		defer c.Close()
+		defer func() { _ = c.Close() }()
 
 		_, err = fmt.Fprintf(c, "RFB %s\n", version)
 		if err != nil {
@@ -76,8 +76,8 @@ func TestClient_LowMinorVersion(t *testing.T) {
 func TestClient_WithContextCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	server, client := net.Pipe()
-	defer server.Close()
-	defer client.Close()
+	defer func() { _ = server.Close() }()
+	defer func() { _ = client.Close() }()
 
 	cancel()
 
@@ -101,8 +101,8 @@ func TestClient_WithContextTimeout(t *testing.T) {
 	defer cancel()
 
 	server, client := net.Pipe()
-	defer server.Close()
-	defer client.Close()
+	defer func() { _ = server.Close() }()
+	defer func() { _ = client.Close() }()
 
 	config := &ClientConfig{
 		Auth: []ClientAuth{&ClientAuthNone{}},
@@ -128,8 +128,8 @@ func TestClient_WithOptionsConfiguration(t *testing.T) {
 
 	// Create a mock connection
 	server, client := net.Pipe()
-	defer server.Close()
-	defer client.Close()
+	defer func() { _ = server.Close() }()
+	defer func() { _ = client.Close() }()
 
 	logger := &StandardLogger{}
 	metrics := &NoOpMetrics{}
@@ -200,12 +200,12 @@ func TestClient_WithOptionsBackwardCompatibility(t *testing.T) {
 
 	// Create mock connections
 	server1, client1 := net.Pipe()
-	defer server1.Close()
-	defer client1.Close()
+	defer func() { _ = server1.Close() }()
+	defer func() { _ = client1.Close() }()
 
 	server2, client2 := net.Pipe()
-	defer server2.Close()
-	defer client2.Close()
+	defer func() { _ = server2.Close() }()
+	defer func() { _ = client2.Close() }()
 
 	logger := &StandardLogger{}
 	auth := &ClientAuthNone{}

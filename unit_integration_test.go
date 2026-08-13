@@ -30,7 +30,7 @@ func TestUnitIntegration_BasicConnectionWorkflow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to mock server: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	// Create client configuration
 	config := &ClientConfig{
@@ -47,7 +47,7 @@ func TestUnitIntegration_BasicConnectionWorkflow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to establish VNC connection: %v", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// Verify connection state
 	if client.FrameBufferWidth == 0 {
@@ -110,7 +110,7 @@ func TestUnitIntegration_AuthenticationFailure(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to mock server: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	config := &ClientConfig{
 		Auth:   []ClientAuth{&ClientAuthNone{}},
@@ -135,7 +135,7 @@ func TestUnitIntegration_ConnectionTimeout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create listener: %v", err)
 	}
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 
 	// Accept connections but don't respond. Keep them open until the
 	// listener closes so the client can time out waiting for a handshake.
@@ -159,7 +159,7 @@ func TestUnitIntegration_ConnectionTimeout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	config := &ClientConfig{
 		Auth:           []ClientAuth{&ClientAuthNone{}},
@@ -202,7 +202,7 @@ func TestUnitIntegration_MultipleAuthMethods(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to mock server: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	// Configure client with multiple auth methods
 	config := &ClientConfig{
@@ -220,7 +220,7 @@ func TestUnitIntegration_MultipleAuthMethods(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to establish VNC connection: %v", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// Connection should succeed with one of the auth methods
 	if client == nil {
@@ -244,7 +244,7 @@ func TestUnitIntegration_FunctionalOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to mock server: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -262,7 +262,7 @@ func TestUnitIntegration_FunctionalOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to establish VNC connection with options: %v", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// Test that the connection was established successfully
 	// Skip the FramebufferUpdateRequest as it may have timing issues with mock server
@@ -323,7 +323,7 @@ func TestUnitIntegration_ErrorRecovery(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to connect to mock server: %v", err)
 			}
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			config := &ClientConfig{
 				Auth:   []ClientAuth{&ClientAuthNone{}},
@@ -339,7 +339,7 @@ func TestUnitIntegration_ErrorRecovery(t *testing.T) {
 				if err == nil {
 					t.Error("Expected error but got none")
 					if client != nil {
-						client.Close()
+						_ = client.Close()
 					}
 				}
 				return
@@ -351,7 +351,7 @@ func TestUnitIntegration_ErrorRecovery(t *testing.T) {
 			}
 
 			if client != nil {
-				client.Close()
+				_ = client.Close()
 			}
 		})
 	}
@@ -373,7 +373,7 @@ func TestUnitIntegration_ConcurrentOperations(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to mock server: %v", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	config := &ClientConfig{
 		Auth:   []ClientAuth{&ClientAuthNone{}},
@@ -387,7 +387,7 @@ func TestUnitIntegration_ConcurrentOperations(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to establish VNC connection: %v", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// Send multiple concurrent operations
 	errChan := make(chan error, 10)

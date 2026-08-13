@@ -124,7 +124,7 @@ func (p *VNCPool) Close() {
 
 	for address, client := range p.connections {
 		p.logger.Printf("Closing connection to %s", address)
-		client.Close()
+		_ = client.Close()
 	}
 	p.connections = make(map[string]*vnc.ClientConn)
 }

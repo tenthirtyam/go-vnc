@@ -62,7 +62,7 @@ func (m *MockVNCServer) Start() error {
 func (m *MockVNCServer) Stop() {
 	close(m.stop)
 	if m.listener != nil {
-		m.listener.Close()
+		_ = m.listener.Close()
 	}
 	m.wg.Wait()
 }
@@ -97,7 +97,7 @@ func (m *MockVNCServer) serve() {
 }
 
 func (m *MockVNCServer) handleConnection(conn net.Conn) {
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	// Set a reasonable timeout
 	if err := conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
