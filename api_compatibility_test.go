@@ -21,12 +21,12 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 		typ := val.Type()
 
 		requiredFields := map[string]reflect.Type{
-			"ColorMap":          reflect.TypeOf([256]Color{}),
-			"Encs":              reflect.TypeOf([]Encoding{}),
-			"FrameBufferWidth":  reflect.TypeOf(uint16(0)),
-			"FrameBufferHeight": reflect.TypeOf(uint16(0)),
-			"DesktopName":       reflect.TypeOf(""),
-			"PixelFormat":       reflect.TypeOf(PixelFormat{}),
+			"ColorMap":          reflect.TypeFor[[256]Color](),
+			"Encs":              reflect.TypeFor[[]Encoding](),
+			"FrameBufferWidth":  reflect.TypeFor[uint16](),
+			"FrameBufferHeight": reflect.TypeFor[uint16](),
+			"DesktopName":       reflect.TypeFor[string](),
+			"PixelFormat":       reflect.TypeFor[PixelFormat](),
 		}
 
 		for fieldName, expectedType := range requiredFields {
@@ -54,10 +54,10 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 		typ := val.Type()
 
 		requiredFields := map[string]reflect.Type{
-			"Auth":            reflect.TypeOf([]ClientAuth{}),
-			"Exclusive":       reflect.TypeOf(false),
-			"ServerMessageCh": reflect.TypeOf((chan<- ServerMessage)(nil)),
-			"ServerMessages":  reflect.TypeOf([]ServerMessage{}),
+			"Auth":            reflect.TypeFor[[]ClientAuth](),
+			"Exclusive":       reflect.TypeFor[bool](),
+			"ServerMessageCh": reflect.TypeFor[chan<- ServerMessage](),
+			"ServerMessages":  reflect.TypeFor[[]ServerMessage](),
 		}
 
 		for fieldName, expectedType := range requiredFields {
@@ -93,27 +93,27 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 		}
 
 		// Check parameter types
-		if clientType.In(0) != reflect.TypeOf((*net.Conn)(nil)).Elem() {
+		if clientType.In(0) != reflect.TypeFor[net.Conn]() {
 			t.Errorf("Client first parameter should be net.Conn, got %v", clientType.In(0))
 		}
 
-		if clientType.In(1) != reflect.TypeOf((*ClientConfig)(nil)) {
+		if clientType.In(1) != reflect.TypeFor[*ClientConfig]() {
 			t.Errorf("Client second parameter should be *ClientConfig, got %v", clientType.In(1))
 		}
 
 		// Check return types
-		if clientType.Out(0) != reflect.TypeOf((*ClientConn)(nil)) {
+		if clientType.Out(0) != reflect.TypeFor[*ClientConn]() {
 			t.Errorf("Client first return should be *ClientConn, got %v", clientType.Out(0))
 		}
 
-		if clientType.Out(1) != reflect.TypeOf((*error)(nil)).Elem() {
+		if clientType.Out(1) != reflect.TypeFor[error]() {
 			t.Errorf("Client second return should be error, got %v", clientType.Out(1))
 		}
 	})
 
 	t.Run("ClientConn method signatures", func(t *testing.T) {
 		// Verify all public methods maintain original signatures
-		connType := reflect.TypeOf((*ClientConn)(nil))
+		connType := reflect.TypeFor[*ClientConn]()
 
 		expectedMethods := map[string]struct {
 			numIn    int
@@ -124,32 +124,32 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 			"Close": {
 				numIn: 1, numOut: 1,
 				inTypes:  []reflect.Type{connType},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 			"CutText": {
 				numIn: 2, numOut: 1,
-				inTypes:  []reflect.Type{connType, reflect.TypeOf("")},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				inTypes:  []reflect.Type{connType, reflect.TypeFor[string]()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 			"FramebufferUpdateRequest": {
 				numIn: 6, numOut: 1,
-				inTypes:  []reflect.Type{connType, reflect.TypeOf(false), reflect.TypeOf(uint16(0)), reflect.TypeOf(uint16(0)), reflect.TypeOf(uint16(0)), reflect.TypeOf(uint16(0))},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				inTypes:  []reflect.Type{connType, reflect.TypeFor[bool](), reflect.TypeFor[uint16](), reflect.TypeFor[uint16](), reflect.TypeFor[uint16](), reflect.TypeFor[uint16]()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 			"KeyEvent": {
 				numIn: 3, numOut: 1,
-				inTypes:  []reflect.Type{connType, reflect.TypeOf(uint32(0)), reflect.TypeOf(false)},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				inTypes:  []reflect.Type{connType, reflect.TypeFor[uint32](), reflect.TypeFor[bool]()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 			"PointerEvent": {
 				numIn: 4, numOut: 1,
-				inTypes:  []reflect.Type{connType, reflect.TypeOf(ButtonMask(0)), reflect.TypeOf(uint16(0)), reflect.TypeOf(uint16(0))},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				inTypes:  []reflect.Type{connType, reflect.TypeFor[ButtonMask](), reflect.TypeFor[uint16](), reflect.TypeFor[uint16]()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 			"SetEncodings": {
 				numIn: 2, numOut: 1,
-				inTypes:  []reflect.Type{connType, reflect.TypeOf([]Encoding{})},
-				outTypes: []reflect.Type{reflect.TypeOf((*error)(nil)).Elem()},
+				inTypes:  []reflect.Type{connType, reflect.TypeFor[[]Encoding]()},
+				outTypes: []reflect.Type{reflect.TypeFor[error]()},
 			},
 		}
 
@@ -192,7 +192,7 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 func TestAPICompatibility_AuthenticationInterfaces(t *testing.T) {
 	t.Run("ClientAuth interface", func(t *testing.T) {
 		// Verify ClientAuth interface maintains required methods
-		authType := reflect.TypeOf((*ClientAuth)(nil)).Elem()
+		authType := reflect.TypeFor[ClientAuth]()
 
 		requiredMethods := map[string]struct {
 			numIn  int
@@ -277,7 +277,7 @@ func TestAPICompatibility_AuthenticationInterfaces(t *testing.T) {
 func TestAPICompatibility_EncodingInterface(t *testing.T) {
 	t.Run("Encoding interface", func(t *testing.T) {
 		// Verify Encoding interface maintains required methods
-		encType := reflect.TypeOf((*Encoding)(nil)).Elem()
+		encType := reflect.TypeFor[Encoding]()
 
 		requiredMethods := map[string]struct {
 			numIn  int
