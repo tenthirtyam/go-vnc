@@ -30,7 +30,7 @@ func (c *ClientAuthNone) SecurityType() uint8 {
 }
 
 // Handshake performs the None authentication handshake.
-func (c *ClientAuthNone) Handshake(ctx context.Context, conn net.Conn) error {
+func (c *ClientAuthNone) Handshake(ctx context.Context, _ net.Conn) error {
 	select {
 	case <-ctx.Done():
 		if c.logger != nil {

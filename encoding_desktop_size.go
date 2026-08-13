@@ -28,7 +28,7 @@ func (*DesktopSizePseudoEncoding) IsPseudo() bool {
 }
 
 // Read decodes DesktopSize pseudo-encoding data from the server.
-func (*DesktopSizePseudoEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (Encoding, error) {
+func (*DesktopSizePseudoEncoding) Read(_ *ClientConn, rect *Rectangle, _ io.Reader) (Encoding, error) {
 	if rect.Width == 0 || rect.Height == 0 {
 		return nil, validationError("DesktopSizePseudoEncoding.Read", "desktop dimensions cannot be zero", nil)
 	}
@@ -92,7 +92,7 @@ func (*DesktopSizePseudoEncoding) Read(c *ClientConn, rect *Rectangle, r io.Read
 //
 // Note: Applications should typically request a full framebuffer update after
 // a desktop size change to refresh the display content for the new dimensions.
-func (desktop *DesktopSizePseudoEncoding) Handle(c *ClientConn, rect *Rectangle) error {
+func (desktop *DesktopSizePseudoEncoding) Handle(c *ClientConn, _ *Rectangle) error {
 	oldWidth, oldHeight := c.GetFrameBufferSize()
 
 	c.mu.Lock()

@@ -38,23 +38,23 @@ type Logger interface {
 type NoOpLogger struct{}
 
 // Debug discards debug-level log messages.
-func (l *NoOpLogger) Debug(msg string, fields ...Field) {
+func (l *NoOpLogger) Debug(_ string, _ ...Field) {
 }
 
 // Info discards info-level log messages.
-func (l *NoOpLogger) Info(msg string, fields ...Field) {
+func (l *NoOpLogger) Info(_ string, _ ...Field) {
 }
 
 // Warn discards warning-level log messages.
-func (l *NoOpLogger) Warn(msg string, fields ...Field) {
+func (l *NoOpLogger) Warn(_ string, _ ...Field) {
 }
 
 // Error discards error-level log messages.
-func (l *NoOpLogger) Error(msg string, fields ...Field) {
+func (l *NoOpLogger) Error(_ string, _ ...Field) {
 }
 
 // With returns a new NoOpLogger instance (ignores fields).
-func (l *NoOpLogger) With(fields ...Field) Logger {
+func (l *NoOpLogger) With(_ ...Field) Logger {
 	return &NoOpLogger{}
 }
 

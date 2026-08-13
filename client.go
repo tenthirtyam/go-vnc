@@ -50,13 +50,13 @@ type MetricsCollector interface {
 type NoOpMetrics struct{}
 
 // Counter returns a no-op counter metric.
-func (m *NoOpMetrics) Counter(name string, tags ...any) any { return nil }
+func (m *NoOpMetrics) Counter(_ string, _ ...any) any { return nil }
 
 // Gauge returns a no-op gauge metric.
-func (m *NoOpMetrics) Gauge(name string, tags ...any) any { return nil }
+func (m *NoOpMetrics) Gauge(_ string, _ ...any) any { return nil }
 
 // Histogram returns a no-op histogram metric.
-func (m *NoOpMetrics) Histogram(name string, tags ...any) any { return nil }
+func (m *NoOpMetrics) Histogram(_ string, _ ...any) any { return nil }
 
 // ClientConn represents an active VNC client connection.
 // Safe for concurrent use for sending client messages.
