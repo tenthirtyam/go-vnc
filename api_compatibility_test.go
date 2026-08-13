@@ -78,36 +78,40 @@ func TestAPICompatibility_PublicAPISignatures(t *testing.T) {
 		}
 	})
 
-	t.Run("Client function signature", func(t *testing.T) {
-		// Verify Client function maintains original signature
-		clientFunc := reflect.ValueOf(Client)
+	t.Run("ClientWithContext function signature", func(t *testing.T) {
+		// Verify ClientWithContext function maintains expected signature
+		clientFunc := reflect.ValueOf(ClientWithContext)
 		clientType := clientFunc.Type()
 
-		// Should be: func(net.Conn, *ClientConfig) (*ClientConn, error)
-		if clientType.NumIn() != 2 {
-			t.Errorf("Client function should have 2 parameters, got %d", clientType.NumIn())
+		// Should be: func(context.Context, net.Conn, *ClientConfig) (*ClientConn, error)
+		if clientType.NumIn() != 3 {
+			t.Errorf("ClientWithContext function should have 3 parameters, got %d", clientType.NumIn())
 		}
 
 		if clientType.NumOut() != 2 {
-			t.Errorf("Client function should have 2 return values, got %d", clientType.NumOut())
+			t.Errorf("ClientWithContext function should have 2 return values, got %d", clientType.NumOut())
 		}
 
 		// Check parameter types
-		if clientType.In(0) != reflect.TypeFor[net.Conn]() {
-			t.Errorf("Client first parameter should be net.Conn, got %v", clientType.In(0))
+		if clientType.In(0) != reflect.TypeFor[context.Context]() {
+			t.Errorf("ClientWithContext first parameter should be context.Context, got %v", clientType.In(0))
 		}
 
-		if clientType.In(1) != reflect.TypeFor[*ClientConfig]() {
-			t.Errorf("Client second parameter should be *ClientConfig, got %v", clientType.In(1))
+		if clientType.In(1) != reflect.TypeFor[net.Conn]() {
+			t.Errorf("ClientWithContext second parameter should be net.Conn, got %v", clientType.In(1))
+		}
+
+		if clientType.In(2) != reflect.TypeFor[*ClientConfig]() {
+			t.Errorf("ClientWithContext third parameter should be *ClientConfig, got %v", clientType.In(2))
 		}
 
 		// Check return types
 		if clientType.Out(0) != reflect.TypeFor[*ClientConn]() {
-			t.Errorf("Client first return should be *ClientConn, got %v", clientType.Out(0))
+			t.Errorf("ClientWithContext first return should be *ClientConn, got %v", clientType.Out(0))
 		}
 
 		if clientType.Out(1) != reflect.TypeFor[error]() {
-			t.Errorf("Client second return should be error, got %v", clientType.Out(1))
+			t.Errorf("ClientWithContext second return should be error, got %v", clientType.Out(1))
 		}
 	})
 
@@ -383,7 +387,7 @@ func TestAPICompatibility_PackageImport(t *testing.T) {
 // identically to the original implementation for common use cases.
 func TestAPICompatibility_FunctionalBehavior(t *testing.T) {
 	t.Run("Basic client creation", func(t *testing.T) {
-		// Test that Client function works with nil config (should not panic)
+		// Test that ClientWithContext works with nil config (should not panic)
 		// This test verifies the function signature and basic error handling
 
 		// Create a connection that will immediately fail to test error handling
@@ -392,7 +396,7 @@ func TestAPICompatibility_FunctionalBehavior(t *testing.T) {
 		defer func() { _ = client.Close() }()
 
 		// This should not panic with nil config (backward compatibility)
-		_, err := Client(client, nil)
+		_, err := ClientWithContext(context.Background(), client, nil)
 		if err != nil {
 			// Error is expected due to closed connection, but should not panic
 			t.Logf("Client creation failed as expected due to closed connection: %v", err)
@@ -515,12 +519,12 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		}
 		defer func() { _ = conn.Close() }()
 
-		// Use original Client function signature
+		// Use ClientWithContext API
 		config := &ClientConfig{
 			Auth: []ClientAuth{&ClientAuthNone{}},
 		}
 
-		client, err := Client(conn, config)
+		client, err := ClientWithContext(context.Background(), conn, config)
 		if err != nil {
 			t.Fatalf("Failed to create VNC client: %v", err)
 		}
@@ -572,7 +576,7 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		}
 		defer func() { _ = conn.Close() }()
 
-		// Test that ClientWithOptions produces equivalent results to Client
+		// Test that ClientWithOptions produces equivalent results to ClientWithContext
 		ctx := context.Background()
 
 		client1, err1 := ClientWithOptions(ctx, conn,

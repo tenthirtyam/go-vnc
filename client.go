@@ -342,7 +342,7 @@ func ClientWithOptions(ctx context.Context, c net.Conn, options ...ClientOption)
 //
 // Example usage:
 //
-//	client, err := Client(conn, config)
+//	client, err := ClientWithContext(context.Background(), conn, config)
 //	if err != nil {
 //		log.Fatal(err)
 //	}
