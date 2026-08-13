@@ -73,6 +73,38 @@ func TestClient_LowMinorVersion(t *testing.T) {
 	}
 }
 
+// TestClient_DeprecatedWrapper exercises the deprecated Client helper, which is a
+// thin wrapper around ClientWithContext(context.Background(), ...).
+func TestClient_DeprecatedWrapper(t *testing.T) {
+	server := NewMockVNCServer()
+	server.AcceptAuth = true
+	if err := server.Start(); err != nil {
+		t.Fatalf("Failed to start mock server: %v", err)
+	}
+	defer server.Stop()
+
+	time.Sleep(50 * time.Millisecond)
+
+	conn, err := net.Dial("tcp", server.Addr())
+	if err != nil {
+		t.Fatalf("Failed to connect to mock server: %v", err)
+	}
+	defer func() { _ = conn.Close() }()
+
+	client, err := Client(conn, &ClientConfig{
+		Auth:   []ClientAuth{&ClientAuthNone{}},
+		Logger: &NoOpLogger{},
+	})
+	if err != nil {
+		t.Fatalf("Client() failed: %v", err)
+	}
+	defer func() { _ = client.Close() }()
+
+	if client.FrameBufferWidth == 0 || client.FrameBufferHeight == 0 {
+		t.Error("Expected non-zero framebuffer dimensions from deprecated Client()")
+	}
+}
+
 func TestClient_WithContextCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	server, client := net.Pipe()
@@ -190,6 +222,24 @@ func TestClient_WithOptionsConfiguration(t *testing.T) {
 	WithMetrics(metrics)(config)
 	if config.Metrics != metrics {
 		t.Error("Expected metrics to be set")
+	}
+
+	registry := NewAuthRegistry()
+	WithAuthRegistry(registry)(config)
+	if config.AuthRegistry != registry {
+		t.Error("Expected AuthRegistry to be set")
+	}
+
+	msgCh := make(chan ServerMessage, 1)
+	WithServerMessageChannel(msgCh)(config)
+	if config.ServerMessageCh != msgCh {
+		t.Error("Expected ServerMessageCh to be set")
+	}
+
+	customMsg := new(BellMessage)
+	WithServerMessages(customMsg)(config)
+	if len(config.ServerMessages) != 1 || config.ServerMessages[0] != customMsg {
+		t.Error("Expected ServerMessages to include custom message type")
 	}
 }
 
