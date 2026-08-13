@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -1372,7 +1373,7 @@ func (c *ClientConn) mainLoop() {
 
 		var messageType uint8
 		if err := c.readBinaryWithContext(c.ctx, &messageType); err != nil {
-			if err == context.Canceled || err == context.DeadlineExceeded {
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 				c.logger.Info("Message processing loop cancelled", Field{Key: "error", Value: err})
 			} else {
 				c.logger.Debug("Connection closed or error reading message type", Field{Key: "error", Value: err})

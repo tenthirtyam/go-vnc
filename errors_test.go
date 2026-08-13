@@ -80,7 +80,7 @@ func TestErrors_VNCErrorUnwrap(t *testing.T) {
 		Err:     underlyingErr,
 	}
 
-	if got := vncErr.Unwrap(); got != underlyingErr {
+	if got := vncErr.Unwrap(); !errors.Is(got, underlyingErr) {
 		t.Errorf("VNCError.Unwrap() = %v, want %v", got, underlyingErr)
 	}
 
@@ -137,7 +137,7 @@ func TestErrors_NewVNCError(t *testing.T) {
 	if vncErr.Message != "test message" {
 		t.Errorf("NewVNCError().Message = %v, want %v", vncErr.Message, "test message")
 	}
-	if vncErr.Err != underlyingErr {
+	if !errors.Is(vncErr.Err, underlyingErr) {
 		t.Errorf("NewVNCError().Err = %v, want %v", vncErr.Err, underlyingErr)
 	}
 }
@@ -284,7 +284,7 @@ func TestErrors_Constructors(t *testing.T) {
 				t.Errorf("%s message = %v, want %v", tt.name, vncErr.Message, "test message")
 			}
 
-			if vncErr.Err != underlyingErr {
+			if !errors.Is(vncErr.Err, underlyingErr) {
 				t.Errorf("%s underlying error = %v, want %v", tt.name, vncErr.Err, underlyingErr)
 			}
 		})

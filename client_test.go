@@ -5,6 +5,7 @@ package vnc
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"testing"
@@ -90,7 +91,7 @@ func TestClient_WithContextCancellation(t *testing.T) {
 		t.Error("Expected error due to context cancellation, but got nil")
 	}
 
-	if err != context.Canceled {
+	if !errors.Is(err, context.Canceled) {
 		t.Logf("Got error: %v (type: %T)", err, err)
 	}
 }
