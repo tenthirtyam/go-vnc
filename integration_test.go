@@ -72,7 +72,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Cannot connect to %s server at %s: %v", serverName, address, err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		// Create appropriate authentication
 		var auth ClientAuth
@@ -96,7 +96,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Fatalf("Failed to establish VNC connection to %s: %v", serverName, err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Verify basic connection properties
 		if client.FrameBufferWidth == 0 || client.FrameBufferHeight == 0 {
@@ -114,7 +114,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Cannot connect to %s server: %v", serverName, err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		var auth ClientAuth
 		if authType == 1 {
@@ -128,7 +128,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Failed to connect to %s: %v", serverName, err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Test different encoding combinations
 		encodingTests := []struct {
@@ -176,7 +176,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Cannot connect to %s server: %v", serverName, err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		var auth ClientAuth
 		if authType == 1 {
@@ -196,7 +196,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Failed to connect to %s: %v", serverName, err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Set encodings
 		encodings := []Encoding{&RawEncoding{}}
@@ -241,7 +241,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Cannot connect to %s server: %v", serverName, err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		var auth ClientAuth
 		if authType == 1 {
@@ -255,7 +255,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Failed to connect to %s: %v", serverName, err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Test key events
 		testKeys := []struct {
@@ -333,7 +333,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Cannot connect to %s server: %v", serverName, err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		var auth ClientAuth
 		if authType == 1 {
@@ -347,7 +347,7 @@ func testVNCServer(t *testing.T, serverName, address, password string, authType 
 		if err != nil {
 			t.Skipf("Failed to connect to %s: %v", serverName, err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Test invalid coordinates (should be handled gracefully)
 		err = client.PointerEvent(0, 65535, 65535)
@@ -399,7 +399,7 @@ func TestIntegration_Stress(t *testing.T) {
 					t.Logf("Connection %d failed to dial: %v", connID, err)
 					return
 				}
-				defer conn.Close()
+				defer func() { _ = conn.Close() }()
 
 				var auth ClientAuth
 				if password == "" {
@@ -414,7 +414,7 @@ func TestIntegration_Stress(t *testing.T) {
 					t.Logf("Connection %d failed to establish VNC: %v", connID, err)
 					return
 				}
-				defer client.Close()
+				defer func() { _ = client.Close() }()
 
 				// Perform continuous operations
 				ticker := time.NewTicker(100 * time.Millisecond)
@@ -453,7 +453,7 @@ func TestIntegration_Stress(t *testing.T) {
 		if err != nil {
 			t.Skipf("Cannot connect to server: %v", err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		var auth ClientAuth
 		if password == "" {
@@ -467,7 +467,7 @@ func TestIntegration_Stress(t *testing.T) {
 		if err != nil {
 			t.Skipf("Failed to establish VNC connection: %v", err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Send high frequency framebuffer update requests
 		const requestCount = 1000
@@ -505,7 +505,7 @@ func TestIntegration_ProtocolCompliance(t *testing.T) {
 		if err != nil {
 			t.Skipf("Cannot connect to server: %v", err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		// Read protocol version
 		version := make([]byte, 12)
@@ -534,7 +534,7 @@ func TestIntegration_ProtocolCompliance(t *testing.T) {
 		if err != nil {
 			t.Skipf("Cannot connect to server: %v", err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		// Complete protocol handshake manually to test security negotiation
 		version := make([]byte, 12)

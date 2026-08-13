@@ -241,8 +241,8 @@ func TestAPICompatibility_AuthenticationInterfaces(t *testing.T) {
 		// Test handshake doesn't error with valid context
 		ctx := context.Background()
 		server, client := net.Pipe()
-		defer server.Close()
-		defer client.Close()
+		defer func() { _ = server.Close() }()
+		defer func() { _ = client.Close() }()
 
 		if err := auth.Handshake(ctx, client); err != nil {
 			t.Errorf("ClientAuthNone.Handshake() should not error with valid context, got %v", err)
@@ -388,8 +388,8 @@ func TestAPICompatibility_FunctionalBehavior(t *testing.T) {
 
 		// Create a connection that will immediately fail to test error handling
 		server, client := net.Pipe()
-		server.Close() // Close server side immediately to cause connection error
-		defer client.Close()
+		_ = server.Close() // Close server side immediately to cause connection error
+		defer func() { _ = client.Close() }()
 
 		// This should not panic with nil config (backward compatibility)
 		_, err := Client(client, nil)
@@ -513,7 +513,7 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to connect to mock server: %v", err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		// Use original Client function signature
 		config := &ClientConfig{
@@ -524,7 +524,7 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to create VNC client: %v", err)
 		}
-		defer client.Close()
+		defer func() { _ = client.Close() }()
 
 		// Verify client has expected properties
 		if client.FrameBufferWidth == 0 || client.FrameBufferHeight == 0 {
@@ -570,7 +570,7 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to connect to mock server: %v", err)
 		}
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 
 		// Test that ClientWithOptions produces equivalent results to Client
 		ctx := context.Background()
@@ -585,7 +585,7 @@ func TestAPICompatibility_Integration(t *testing.T) {
 		if err1 != nil {
 			t.Logf("ClientWithOptions failed as expected due to connection reuse: %v", err1)
 		} else {
-			defer client1.Close()
+			defer func() { _ = client1.Close() }()
 
 			// Verify it has the same interface
 			if client1.FrameBufferWidth == 0 || client1.FrameBufferHeight == 0 {

@@ -245,7 +245,7 @@ func ClientWithContext(ctx context.Context, c net.Conn, cfg *ClientConfig) (*Cli
 	}
 
 	if err := conn.handshakeWithContext(connCtx); err != nil {
-		conn.Close()
+		_ = conn.Close()
 		return nil, err
 	}
 
@@ -1338,7 +1338,7 @@ func (c *ClientConn) handshakeWithContext(ctx context.Context) error {
 // mainLoop reads messages sent from the server and routes them to the
 // proper channels for users of the client to read.
 func (c *ClientConn) mainLoop() {
-	defer c.Close()
+	defer func() { _ = c.Close() }()
 
 	c.logger.Info("Starting message processing loop")
 
