@@ -1309,7 +1309,7 @@ func (c *ClientConn) handshakeWithContext(ctx context.Context) error {
 
 	// Validate and sanitize desktop name
 	desktopNameStr := string(nameBytes)
-	if err := validator.ValidateTextData(desktopNameStr, int(maxDesktopNameLength)); err != nil {
+	if err := validator.ValidateTextData(desktopNameStr, maxDesktopNameLength); err != nil {
 		c.logger.Warn("Invalid desktop name received from server, sanitizing",
 			Field{Key: "original_name", Value: desktopNameStr},
 			Field{Key: "error", Value: err})
@@ -1445,7 +1445,7 @@ func (c *ClientConn) readErrorReason() string {
 
 	// Validate and sanitize error reason text
 	reasonText := string(reason)
-	if err := validator.ValidateTextData(reasonText, int(maxErrorReasonLength)); err != nil {
+	if err := validator.ValidateTextData(reasonText, maxErrorReasonLength); err != nil {
 		c.logger.Warn("Invalid error reason text received from server, sanitizing",
 			Field{Key: "original_text", Value: reasonText},
 			Field{Key: "error", Value: err})

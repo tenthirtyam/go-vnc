@@ -610,7 +610,7 @@ func (*ServerCutTextMessage) Read(c *ClientConn, r io.Reader) (ServerMessage, er
 	}
 
 	clipboardText := string(textBytes)
-	if err := validator.ValidateTextData(clipboardText, int(MaxServerClipboardLength)); err != nil {
+	if err := validator.ValidateTextData(clipboardText, MaxServerClipboardLength); err != nil {
 		c.logger.Warn("Invalid clipboard text received from server, sanitizing",
 			Field{Key: "original_length", Value: len(clipboardText)},
 			Field{Key: "error", Value: err})
