@@ -437,10 +437,11 @@ func automatedWorkflowExample(ctx context.Context) error {
 
 		// Create step context with timeout
 		stepCtx, cancel := context.WithTimeout(ctx, step.Timeout)
-		defer cancel()
 
 		// Execute step
-		if err := step.Action(stepCtx); err != nil {
+		err := step.Action(stepCtx)
+		cancel()
+		if err != nil {
 			fmt.Printf("   ✗ Step failed: %v\n", err)
 			if step.Required {
 				return fmt.Errorf("required step '%s' failed: %w", step.Name, err)
