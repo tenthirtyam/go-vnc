@@ -1,15 +1,12 @@
 ---
-name: Bug
-description: Report a bug or unexpected behavior in the library.
-labels: [bug]
-assignees: [tenthirtyam]
+labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Before filing an issue, please [search the existing issues](https://github.com/tenthirtyam/go-vnc/issues?q=is%3Aissue+is%3Aopen+label%3Abug) (open or closed), and use the [reaction](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/) feature to add up-votes to existing issues.
+        Before filing a triage discussion, please [search the existing discussions](https://github.com/tenthirtyam/go-vnc/discussions?discussions_q=is%3Aopen+category%3ATriage) (open or closed), and use the [reaction](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/) feature to add up-votes to existing reports.
 
-        When filing an issue, please include the following information.
+        When filing a triage discussion, please include the following information.
   - type: input
     id: version
     attributes:
@@ -112,7 +109,7 @@ body:
     attributes:
       label: References
       description: |
-        Please provide any related GitHub issues or pull requests (open or closed) or documentation.
+        Please provide any related GitHub issues, discussions, or pull requests (open or closed) or documentation.
         Learn about [Referencing Github Issues and Pull Requests](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests).
       placeholder: |
         #GH-0000
