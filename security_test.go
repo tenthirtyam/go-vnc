@@ -28,7 +28,7 @@ func TestSecurity_ClearBytes(t *testing.T) {
 	}
 
 	// Test clearing empty slice
-	emptyData := []byte{}
+	var emptyData []byte
 	sm.ClearBytes(emptyData) // Should not panic
 
 	// Test clearing nil slice
