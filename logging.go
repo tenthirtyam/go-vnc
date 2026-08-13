@@ -12,7 +12,7 @@ import (
 // Field represents a structured logging field with a key-value pair.
 type Field struct {
 	Key   string
-	Value interface{}
+	Value any
 }
 
 // Logger defines the interface for structured logging throughout the VNC library.
@@ -92,7 +92,7 @@ func (l *StandardLogger) formatMessage(level, msg string, fields ...Field) strin
 
 // formatFieldValue converts a field value to a string representation for logging.
 // Strings containing spaces are quoted, errors are quoted, other values use default formatting.
-func formatFieldValue(value interface{}) string {
+func formatFieldValue(value any) string {
 	switch v := value.(type) {
 	case string:
 		if containsSpace(v) {

@@ -40,22 +40,22 @@ const (
 
 // MetricsCollector defines the interface for collecting metrics and observability data.
 type MetricsCollector interface {
-	Counter(name string, tags ...interface{}) interface{}
-	Gauge(name string, tags ...interface{}) interface{}
-	Histogram(name string, tags ...interface{}) interface{}
+	Counter(name string, tags ...any) any
+	Gauge(name string, tags ...any) any
+	Histogram(name string, tags ...any) any
 }
 
 // NoOpMetrics is a MetricsCollector implementation that discards all metrics.
 type NoOpMetrics struct{}
 
 // Counter returns a no-op counter metric.
-func (m *NoOpMetrics) Counter(name string, tags ...interface{}) interface{} { return nil }
+func (m *NoOpMetrics) Counter(name string, tags ...any) any { return nil }
 
 // Gauge returns a no-op gauge metric.
-func (m *NoOpMetrics) Gauge(name string, tags ...interface{}) interface{} { return nil }
+func (m *NoOpMetrics) Gauge(name string, tags ...any) any { return nil }
 
 // Histogram returns a no-op histogram metric.
-func (m *NoOpMetrics) Histogram(name string, tags ...interface{}) interface{} { return nil }
+func (m *NoOpMetrics) Histogram(name string, tags ...any) any { return nil }
 
 // ClientConn represents an active VNC client connection.
 // Safe for concurrent use for sending client messages.
@@ -429,7 +429,7 @@ func (c *ClientConn) CutText(text string) error {
 	var buf bytes.Buffer
 
 	// This is the fixed size data we'll send
-	fixedData := []interface{}{
+	fixedData := []any{
 		uint8(6),
 		uint8(0),
 		uint8(0),
@@ -526,7 +526,7 @@ func (c *ClientConn) FramebufferUpdateRequest(incremental bool, x, y, width, hei
 		incrementalByte = 1
 	}
 
-	data := []interface{}{
+	data := []any{
 		uint8(3),
 		incrementalByte,
 		x, y, width, height,
@@ -635,7 +635,7 @@ func (c *ClientConn) KeyEvent(keysym uint32, down bool) error {
 		downFlag = 1
 	}
 
-	data := []interface{}{
+	data := []any{
 		uint8(4),
 		downFlag,
 		uint8(0),
@@ -757,7 +757,7 @@ func (c *ClientConn) PointerEvent(mask ButtonMask, x, y uint16) error {
 
 	var buf bytes.Buffer
 
-	data := []interface{}{
+	data := []any{
 		uint8(5),
 		uint8(mask),
 		x,
@@ -882,7 +882,7 @@ func (c *ClientConn) SetEncodings(encs []Encoding) error {
 		Field{Key: "count", Value: len(encs)},
 		Field{Key: "types", Value: encodingTypes})
 
-	data := make([]interface{}, 3+len(encs))
+	data := make([]any, 3+len(encs))
 	data[0] = uint8(2)
 	data[1] = uint8(0)
 	data[2] = uint16(len(encs)) // #nosec G115 - len(encs) was already validated to be <= maxEncodings (100)
@@ -1491,7 +1491,7 @@ func (c *ClientConn) writeWithContext(ctx context.Context, data []byte) error {
 }
 
 // readBinaryWithContext reads binary data with context cancellation support.
-func (c *ClientConn) readBinaryWithContext(ctx context.Context, data interface{}) error {
+func (c *ClientConn) readBinaryWithContext(ctx context.Context, data any) error {
 	done := make(chan error, 1)
 
 	go func() {
@@ -1507,7 +1507,7 @@ func (c *ClientConn) readBinaryWithContext(ctx context.Context, data interface{}
 }
 
 // writeBinaryWithContext writes binary data with context cancellation support.
-func (c *ClientConn) writeBinaryWithContext(ctx context.Context, data interface{}) error {
+func (c *ClientConn) writeBinaryWithContext(ctx context.Context, data any) error {
 	done := make(chan error, 1)
 
 	go func() {

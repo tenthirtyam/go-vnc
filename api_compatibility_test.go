@@ -360,7 +360,7 @@ func TestAPICompatibility_PackageImport(t *testing.T) {
 
 	t.Run("Public types availability", func(t *testing.T) {
 		// Verify all expected public types are available
-		expectedTypes := []interface{}{
+		expectedTypes := []any{
 			(*ClientConn)(nil),
 			(*ClientConfig)(nil),
 			(*ClientAuthNone)(nil),

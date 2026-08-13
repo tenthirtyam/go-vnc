@@ -134,7 +134,7 @@ func TestLogging_StandardLoggerDefault(t *testing.T) {
 func TestLogging_FormatFieldValue(t *testing.T) {
 	tests := []struct {
 		name     string
-		value    interface{}
+		value    any
 		expected string
 	}{
 		{

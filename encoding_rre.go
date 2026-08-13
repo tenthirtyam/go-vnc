@@ -142,7 +142,7 @@ func (*RREEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (Encoding,
 
 		// Read subrectangle position and dimensions
 		var x, y, width, height uint16
-		data := []interface{}{&x, &y, &width, &height}
+		data := []any{&x, &y, &width, &height}
 		for _, val := range data {
 			if err := binary.Read(r, binary.BigEndian, val); err != nil {
 				return nil, encodingError("RREEncoding.Read", "failed to read subrectangle geometry", err)
