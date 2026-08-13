@@ -298,7 +298,6 @@ func TestAuthRegistry_Integration(t *testing.T) {
 	// Create a client config with the registry
 	config := &ClientConfig{
 		AuthRegistry: registry,
-		Logger:       &NoOpLogger{},
 	}
 
 	// Test that the registry is properly set
@@ -435,7 +434,6 @@ func TestAuthRegistry_BackwardCompatibility(t *testing.T) {
 			&ClientAuthNone{},
 			&PasswordAuth{Password: "secret"},
 		},
-		Logger: &NoOpLogger{},
 	}
 
 	// Verify that Auth slice is properly set
@@ -469,7 +467,6 @@ func TestAuthRegistry_Precedence(t *testing.T) {
 			&PasswordAuth{Password: "secret"}, // This should be ignored
 		},
 		AuthRegistry: registry, // This should take precedence
-		Logger:       &NoOpLogger{},
 	}
 
 	// Verify that both Auth and AuthRegistry are set
