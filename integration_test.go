@@ -463,7 +463,7 @@ func TestIntegration_Stress(t *testing.T) {
 		}
 
 		config := &ClientConfig{Auth: []ClientAuth{auth}}
-		client, err := Client(conn, config)
+		client, err := ClientWithContext(context.Background(), conn, config)
 		if err != nil {
 			t.Skipf("Failed to establish VNC connection: %v", err)
 		}

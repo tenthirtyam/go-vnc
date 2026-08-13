@@ -45,7 +45,7 @@ func TestClient_LowMajorVersion(t *testing.T) {
 		t.Fatalf("error connecting to mock server: %s", err)
 	}
 
-	_, err = Client(nc, &ClientConfig{})
+	_, err = ClientWithContext(context.Background(), nc, &ClientConfig{})
 	if err == nil {
 		t.Fatal("error expected")
 	}
@@ -62,7 +62,7 @@ func TestClient_LowMinorVersion(t *testing.T) {
 		t.Fatalf("error connecting to mock server: %s", err)
 	}
 
-	_, err = Client(nc, &ClientConfig{})
+	_, err = ClientWithContext(context.Background(), nc, &ClientConfig{})
 	if err == nil {
 		t.Fatal("error expected")
 	}
