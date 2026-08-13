@@ -6,6 +6,7 @@ package vnc
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -132,7 +133,8 @@ func TestEncoding_Raw(t *testing.T) {
 					return
 				}
 
-				if vncErr, ok := err.(*VNCError); ok {
+				var vncErr *VNCError
+				if errors.As(err, &vncErr) {
 					if vncErr.Code != tt.errorType {
 						t.Errorf("Expected error type %v, got %v", tt.errorType, vncErr.Code)
 					}
@@ -237,7 +239,8 @@ func TestEncoding_CopyRect(t *testing.T) {
 					return
 				}
 
-				if vncErr, ok := err.(*VNCError); ok {
+				var vncErr *VNCError
+				if errors.As(err, &vncErr) {
 					if vncErr.Code != tt.errorType {
 						t.Errorf("Expected error type %v, got %v", tt.errorType, vncErr.Code)
 					}
@@ -393,7 +396,8 @@ func TestEncoding_RRE(t *testing.T) {
 					return
 				}
 
-				if vncErr, ok := err.(*VNCError); ok {
+				var vncErr *VNCError
+				if errors.As(err, &vncErr) {
 					if vncErr.Code != tt.errorType {
 						t.Errorf("Expected error type %v, got %v", tt.errorType, vncErr.Code)
 					}
@@ -547,7 +551,8 @@ func TestEncoding_Hextile(t *testing.T) {
 					return
 				}
 
-				if vncErr, ok := err.(*VNCError); ok {
+				var vncErr *VNCError
+				if errors.As(err, &vncErr) {
 					if vncErr.Code != tt.errorType {
 						t.Errorf("Expected error type %v, got %v", tt.errorType, vncErr.Code)
 					}
@@ -668,7 +673,8 @@ func TestEncoding_ErrorHandling(t *testing.T) {
 					return
 				}
 
-				if vncErr, ok := err.(*VNCError); ok {
+				var vncErr *VNCError
+				if errors.As(err, &vncErr) {
 					if vncErr.Code != tt.errorType {
 						t.Errorf("Expected error type %v, got %v", tt.errorType, vncErr.Code)
 					}

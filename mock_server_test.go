@@ -5,6 +5,7 @@ package vnc
 
 import (
 	"encoding/binary"
+	"errors"
 	"io"
 	"net"
 	"sync"
@@ -255,7 +256,8 @@ func (m *MockVNCServer) handleMessages(conn net.Conn) {
 
 		n, err := conn.Read(buf)
 		if err != nil {
-			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+			var netErr net.Error
+			if errors.As(err, &netErr) && netErr.Timeout() {
 				continue
 			}
 			return
