@@ -386,7 +386,7 @@ func TestUnitIntegration_ConcurrentOperations(t *testing.T) {
 	// Send multiple concurrent operations
 	errChan := make(chan error, 10)
 
-	for i := 0; i < 5; i++ {
+	for i := range 5 {
 		go func(id int) {
 			_ = id // ID could be used for logging in real implementation
 			if err := client.FramebufferUpdateRequest(true, 0, 0, 100, 100); err != nil {

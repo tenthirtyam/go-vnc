@@ -159,7 +159,7 @@ func (sdc *SecureDESCipher) EncryptVNCChallenge(password string, challenge []byt
 
 	keyLen := min(len(passwordBytes), VNCMaxPasswordLength)
 
-	for i := 0; i < DESKeySize; i++ {
+	for i := range DESKeySize {
 		if i < keyLen {
 			keyBytes[i] = sdc.reverseBitsSecure(passwordBytes[i])
 		} else {

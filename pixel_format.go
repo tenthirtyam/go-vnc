@@ -536,7 +536,7 @@ func ConvertPixelFormat(ctx context.Context, srcData []byte, srcFormat, dstForma
 	srcReader := bytes.NewReader(srcData)
 	dstWriter := bytes.NewBuffer(dstData[:0])
 
-	for i := 0; i < pixelCount; i++ {
+	for i := range pixelCount {
 		// Check for context cancellation
 		select {
 		case <-ctx.Done():

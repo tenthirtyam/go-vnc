@@ -243,11 +243,11 @@ func TestColor_MapConcurrency(t *testing.T) {
 	numOperations := 100
 
 	// Concurrent writers
-	for i := 0; i < numGoroutines; i++ {
+	for i := range numGoroutines {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			for j := 0; j < numOperations; j++ {
+			for j := range numOperations {
 				color := Color{R: uint16(id), G: uint16(j), B: 0} // #nosec G115 - Test code with bounded values
 				cm.Set(uint8(id), color)                          // #nosec G115 - Test code with bounded values
 			}
@@ -255,11 +255,11 @@ func TestColor_MapConcurrency(t *testing.T) {
 	}
 
 	// Concurrent readers
-	for i := 0; i < numGoroutines; i++ {
+	for i := range numGoroutines {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			for j := 0; j < numOperations; j++ {
+			for range numOperations {
 				_ = cm.Get(uint8(id)) // #nosec G115 - Test code with bounded values
 			}
 		}(i)

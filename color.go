@@ -55,7 +55,7 @@ func (cm *ColorMap) initializeDefault() {
 	cm.mu.Lock()
 	defer cm.mu.Unlock()
 
-	for i := 0; i < ColorMapSize; i++ {
+	for i := range ColorMapSize {
 		value := uint16(i * 257) // #nosec G115 - i is bounded by ColorMapSize (256)
 		cm.colors[i] = Color{R: value, G: value, B: value}
 	}
@@ -134,7 +134,7 @@ func (cm *ColorMap) GetRange(startIndex uint16, count uint16) ([]Color, error) {
 	defer cm.mu.RUnlock()
 
 	colors := make([]Color, count)
-	for i := uint16(0); i < count; i++ {
+	for i := range count {
 		colors[i] = cm.colors[startIndex+i]
 	}
 

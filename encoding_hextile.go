@@ -115,8 +115,8 @@ func (*HextileEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (Encod
 
 	var background, foreground Color
 
-	for tileY := uint16(0); tileY < tilesY; tileY++ {
-		for tileX := uint16(0); tileX < tilesX; tileX++ {
+	for tileY := range tilesY {
+		for tileX := range tilesX {
 			tileWidth := uint16(HextileTileSize)
 			tileHeight := uint16(HextileTileSize)
 
@@ -140,7 +140,7 @@ func (*HextileEncoding) Read(c *ClientConn, rect *Rectangle, r io.Reader) (Encod
 				pixelCount := int(tileWidth * tileHeight)
 				tile.Colors = make([]Color, pixelCount)
 
-				for i := 0; i < pixelCount; i++ {
+				for i := range pixelCount {
 					color, err := readPixelColor(r, c.PixelFormat, c.ColorMap)
 					if err != nil {
 						return nil, encodingError("HextileEncoding.Read", "failed to read raw tile pixel", err)
