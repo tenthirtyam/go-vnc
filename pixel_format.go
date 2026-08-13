@@ -183,7 +183,7 @@ func writePixelFormat(format *PixelFormat) ([]byte, error) {
 // PixelFormatValidationError represents a pixel format validation error with detailed context.
 type PixelFormatValidationError struct {
 	Field   string
-	Value   interface{}
+	Value   any
 	Rule    string
 	Message string
 }

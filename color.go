@@ -23,7 +23,7 @@ type Color struct {
 // ColorMapValidationError represents a color map validation error with detailed context.
 type ColorMapValidationError struct {
 	Index   uint16
-	Value   interface{}
+	Value   any
 	Rule    string
 	Message string
 }
