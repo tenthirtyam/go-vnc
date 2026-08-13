@@ -41,3 +41,6 @@ labels:
   - name: stale
     color: "#e69138"
     description: Stale
+  - name: pending-close
+    color: "#b60205"
+    description: Pending Close

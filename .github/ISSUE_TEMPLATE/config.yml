@@ -1,5 +1,9 @@
+---
 blank_issues_enabled: false
 contact_links:
+  - name: Discussions
+    url: https://github.com/tenthirtyam/go-vnc/discussions/new/choose
+    about: The starting point for questions, assistance, and discussions about this project.
   - name: Sponsor this Project
     url: https://github.com/sponsors/tenthirtyam
     about: Support this project by sponsoring it on GitHub.
