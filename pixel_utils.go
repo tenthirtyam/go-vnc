@@ -80,9 +80,9 @@ func (pr *PixelReader) pixelToColor(rawPixel uint32) Color {
 			G: uint16((rawPixel >> pr.pixelFormat.GreenShift) & uint32(pr.pixelFormat.GreenMax)), // #nosec G115 - Masked by GreenMax
 			B: uint16((rawPixel >> pr.pixelFormat.BlueShift) & uint32(pr.pixelFormat.BlueMax)),   // #nosec G115 - Masked by BlueMax
 		}
-	} else {
-		return pr.colorMap[rawPixel]
 	}
+
+	return pr.colorMap[rawPixel]
 }
 
 // Convenience functions for backward compatibility and ease of use

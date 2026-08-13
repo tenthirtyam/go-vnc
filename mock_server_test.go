@@ -166,9 +166,9 @@ func (m *MockVNCServer) handleSecurity(conn net.Conn) error {
 		// Send security result based on AcceptAuth flag
 		if m.AcceptAuth {
 			return binary.Write(conn, binary.BigEndian, uint32(0)) // OK
-		} else {
-			return binary.Write(conn, binary.BigEndian, uint32(1)) // Failed
 		}
+
+		return binary.Write(conn, binary.BigEndian, uint32(1)) // Failed
 	case 2: // VNC auth
 		return m.handleVNCAuth(conn)
 	default:
@@ -197,9 +197,9 @@ func (m *MockVNCServer) handleVNCAuth(conn net.Conn) error {
 	// Send security result
 	if m.AcceptAuth {
 		return binary.Write(conn, binary.BigEndian, uint32(0)) // OK
-	} else {
-		return binary.Write(conn, binary.BigEndian, uint32(1)) // Failed
 	}
+
+	return binary.Write(conn, binary.BigEndian, uint32(1)) // Failed
 }
 
 func (m *MockVNCServer) handleClientInit(conn net.Conn) error {
