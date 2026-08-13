@@ -311,16 +311,3 @@ func (m *MockVNCServer) sendFramebufferUpdate(conn net.Conn) {
 		return
 	}
 }
-
-// StartMockServer is a helper function to start a mock server for testing.
-func StartMockServer() (*MockVNCServer, error) {
-	server := NewMockVNCServer()
-	if err := server.Start(); err != nil {
-		return nil, err
-	}
-
-	// Give the server a moment to start
-	time.Sleep(10 * time.Millisecond)
-
-	return server, nil
-}
