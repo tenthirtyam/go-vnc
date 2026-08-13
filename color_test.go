@@ -317,17 +317,27 @@ func TestColor_FormatConverterHSV(t *testing.T) {
 }
 
 func TestColor_Constants(t *testing.T) {
-	// Test color constants
-	if ColorBlack != (Color{R: 0, G: 0, B: 0}) {
-		t.Errorf("ColorBlack incorrect: %+v", ColorBlack)
+	tests := []struct {
+		name string
+		got  Color
+		want Color
+	}{
+		{"ColorBlack", ColorBlack, Color{R: 0, G: 0, B: 0}},
+		{"ColorWhite", ColorWhite, Color{R: 65535, G: 65535, B: 65535}},
+		{"ColorRed", ColorRed, Color{R: 65535, G: 0, B: 0}},
+		{"ColorGreen", ColorGreen, Color{R: 0, G: 65535, B: 0}},
+		{"ColorBlue", ColorBlue, Color{R: 0, G: 0, B: 65535}},
+		{"ColorYellow", ColorYellow, Color{R: 65535, G: 65535, B: 0}},
+		{"ColorMagenta", ColorMagenta, Color{R: 65535, G: 0, B: 65535}},
+		{"ColorCyan", ColorCyan, Color{R: 0, G: 65535, B: 65535}},
 	}
 
-	if ColorWhite != (Color{R: 65535, G: 65535, B: 65535}) {
-		t.Errorf("ColorWhite incorrect: %+v", ColorWhite)
-	}
-
-	if ColorRed != (Color{R: 65535, G: 0, B: 0}) {
-		t.Errorf("ColorRed incorrect: %+v", ColorRed)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.got != tt.want {
+				t.Errorf("%s incorrect: %+v, want %+v", tt.name, tt.got, tt.want)
+			}
+		})
 	}
 }
 
