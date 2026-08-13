@@ -6,6 +6,7 @@ package vnc
 import (
 	"errors"
 	"fmt"
+	"slices"
 )
 
 // ErrorCode represents specific error categories for VNC operations.
@@ -123,12 +124,7 @@ func IsVNCError(err error, code ...ErrorCode) bool {
 		return true
 	}
 
-	for _, c := range code {
-		if vncErr.Code == c {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(code, vncErr.Code)
 }
 
 // GetErrorCode extracts the error code from a VNCError.

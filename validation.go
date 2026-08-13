@@ -6,6 +6,7 @@ package vnc
 import (
 	"fmt"
 	"math"
+	"slices"
 	"unicode"
 	"unicode/utf8"
 )
@@ -146,13 +147,7 @@ func (iv *InputValidator) ValidatePixelFormat(pf *PixelFormat) error {
 	}
 
 	validBPP := []uint8{8, 16, 32}
-	bppValid := false
-	for _, valid := range validBPP {
-		if pf.BPP == valid {
-			bppValid = true
-			break
-		}
-	}
+	bppValid := slices.Contains(validBPP, pf.BPP)
 	if !bppValid {
 		return validationError("InputValidator.ValidatePixelFormat",
 			fmt.Sprintf("invalid bits per pixel: %d (must be 8, 16, or 32)", pf.BPP), nil)
